@@ -10,6 +10,8 @@ import static org.junit.jupiter.api.Assumptions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class MathsUtilTest {
+    TestInfo testInfo;
+    TestReporter testReporter;
     @BeforeAll
     static void beforeAllInit(){
         System.out.println("This needs to run befor all functions");
@@ -21,8 +23,13 @@ public class MathsUtilTest {
     MathUtils mathUtils;
 //    this mathutils object will always be instantiated and remove dupliccy in the functions
     @BeforeEach
-    public void init(){
+    public void init(TestInfo testInfo, TestReporter testReporter){
+        this.testInfo=testInfo;
+        this.testReporter=testReporter;
+        testInfo.getDisplayName();
         mathUtils=new MathUtils();
+        testReporter.publishEntry("Running "+testInfo.getDisplayName()
+                +" with tags "+testInfo.getTags());
     }
     @AfterEach
     void cleanup(){
@@ -66,8 +73,10 @@ public class MathsUtilTest {
 
 //    More effective eway to run all teh assert in one go
     @Test
+    @Tag("Math")
     @DisplayName("Multiply metho")
     void testMultiply(){
+
         assertAll(
                 ()->assertEquals(4, mathUtils.multiply(2,2)),
                 ()->assertEquals(0, mathUtils.multiply(2,0)),
